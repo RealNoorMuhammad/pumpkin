@@ -9,7 +9,7 @@ html, body {
 /* Custom Fonts */
 @font-face {
     font-family: 'Haunted';
-    src: url('../assets/fonts/HauntedHillRegular-Regular.ttf') format('truetype');
+    src: url('/fonts/HauntedHillRegular-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -17,7 +17,7 @@ html, body {
 
 @font-face {
     font-family: 'Melted';
-    src: url('../assets/fonts/Melted Monster.ttf') format('truetype');
+    src: url('/fonts/Melted Monster.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -25,7 +25,7 @@ html, body {
 
 @font-face {
     font-family: 'Zombie';
-    src: url('../assets/fonts/Shadow of the Deads.ttf') format('truetype');
+    src: url('/fonts/Shadow of the Deads.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
