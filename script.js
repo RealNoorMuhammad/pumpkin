@@ -1,20 +1,22 @@
+// ================================
 // Toggle Mobile Menu
+// ================================
 function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobileMenu');
     const burgerMenu = document.getElementById('burgerMenu');
-    
+
     mobileMenu.classList.toggle('active');
     burgerMenu.classList.toggle('active');
 }
 
-// Copy CA to clipboard function
+// ================================
+// Copy CA to Clipboard
+// ================================
 function copyCA() {
     const caText = "0xcD27d168E12c97d4AcA2bdfe437f7cC2d8AB4444";
     const button = document.querySelector('.ca-copy-btn');
-    
-    // Copy to clipboard
+
     navigator.clipboard.writeText(caText).then(() => {
-        // Change button text and style temporarily
         const originalHTML = button.innerHTML;
         button.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -23,8 +25,7 @@ function copyCA() {
             Copied!
         `;
         button.classList.add('copied');
-        
-        // Reset after 2 seconds
+
         setTimeout(() => {
             button.innerHTML = originalHTML;
             button.classList.remove('copied');
@@ -35,58 +36,61 @@ function copyCA() {
     });
 }
 
-// Global mouse glow effect
+// ================================
+// Global Mouse Glow Effect
+// ================================
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
-    
-    // Activate glow and track mouse position
+
     document.addEventListener('mousemove', (e) => {
         body.classList.add('glow-active');
-        
-        // Update position relative to viewport (fixed positioning)
         body.style.setProperty('--mouse-x', `${e.clientX}px`);
         body.style.setProperty('--mouse-y', `${e.clientY}px`);
     });
-    
-    // Deactivate glow when mouse leaves the window
+
     document.addEventListener('mouseleave', () => {
         body.classList.remove('glow-active');
     });
-    
-    // Reactivate when mouse enters
+
     document.addEventListener('mouseenter', () => {
         body.classList.add('glow-active');
     });
 });
 
-// Carousel functionality
+// ================================
+// Responsive Carousel Functionality
+// ================================
 let currentIndex = 0;
 let autoScrollInterval;
-const totalVideos = 8;
-const visibleVideos = 3;
-const maxIndex = totalVideos - visibleVideos;
+
+// Dynamically calculate visible items based on screen width
+function getVisibleVideos() {
+    const width = window.innerWidth;
+    if (width < 600) return 1;      // Mobile
+    if (width < 1024) return 2;     // Tablet
+    return 3;                       // Desktop
+}
 
 function moveCarousel(direction) {
     const track = document.querySelector('.carousel-track');
     const item = document.querySelector('.carousel-item');
+    if (!track || !item) return;
+
+    const totalVideos = document.querySelectorAll('.carousel-item').length;
+    const visibleVideos = getVisibleVideos();
+    const maxIndex = totalVideos - visibleVideos;
+
     const itemWidth = item.getBoundingClientRect().width;
-    const gap = 20;
-    
+    const gap = parseFloat(window.getComputedStyle(track).gap) || 20;
+
     // Update index
     currentIndex += direction;
-    
-    // Wrap around logic
-    if (currentIndex < 0) {
-        currentIndex = maxIndex;
-    } else if (currentIndex > maxIndex) {
-        currentIndex = 0;
-    }
-    
-    // Calculate and apply transform with proper rounding
-    const translateX = Math.round(-(currentIndex * (itemWidth + gap)));
+    if (currentIndex < 0) currentIndex = maxIndex;
+    else if (currentIndex > maxIndex) currentIndex = 0;
+
+    const translateX = -(currentIndex * (itemWidth + gap));
     track.style.transform = `translateX(${translateX}px)`;
-    
-    // Reset auto-scroll interval
+
     resetAutoScroll();
 }
 
@@ -96,60 +100,58 @@ function autoScroll() {
 
 function resetAutoScroll() {
     clearInterval(autoScrollInterval);
-    autoScrollInterval = setInterval(autoScroll, 2000);
+    autoScrollInterval = setInterval(autoScroll, 3000);
 }
 
-// Initialize auto-scroll when page loads
+// Initialize carousel
 document.addEventListener('DOMContentLoaded', () => {
-    // Start auto-scroll after videos load
     setTimeout(() => {
-        autoScrollInterval = setInterval(autoScroll, 2000);
+        autoScrollInterval = setInterval(autoScroll, 3000);
         initializeVideos();
         setupHoverPause();
     }, 1000);
+
+    // Recalculate carousel on window resize
+    window.addEventListener('resize', () => {
+        currentIndex = 0;
+        moveCarousel(0);
+    });
 });
 
-// Setup hover pause for individual video cards
+// Pause carousel on hover
 function setupHoverPause() {
     const videoCards = document.querySelectorAll('.video-card');
-    
     videoCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            clearInterval(autoScrollInterval);
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            resetAutoScroll();
-        });
+        card.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+        card.addEventListener('mouseleave', () => resetAutoScroll());
     });
 }
 
-// Volume toggle function
+// ================================
+// Volume Toggle for Videos
+// ================================
 function toggleVolume(button) {
     const videoWrapper = button.closest('.video-wrapper');
     const video = videoWrapper.querySelector('.tiktok-video');
-    
-    // Toggle muted state
+
     video.muted = !video.muted;
-    
-    // Toggle active class on button
     button.classList.toggle('active');
-    
-    // If unmuting, ensure video is playing
+
     if (!video.muted && video.paused) {
         video.play();
     }
 }
 
-// Video functionality
+// ================================
+// Video Initialization
+// ================================
 function initializeVideos() {
     const videos = document.querySelectorAll('.tiktok-video');
-    
+
     videos.forEach(video => {
-        // Ensure videos are muted for autoplay
         video.muted = true;
         video.playsInline = true;
-        
+
         // Click to play/pause
         video.addEventListener('click', function() {
             if (this.paused) {
@@ -158,7 +160,7 @@ function initializeVideos() {
                 this.pause();
             }
         });
-        
+
         // Touch to play on mobile
         video.addEventListener('touchstart', function(e) {
             e.preventDefault();
@@ -166,8 +168,8 @@ function initializeVideos() {
                 this.play().catch(e => console.log('Video play failed:', e));
             }
         });
-        
-        // Auto-play visible videos (muted)
+
+        // Auto-play visible videos using IntersectionObserver
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -177,7 +179,7 @@ function initializeVideos() {
                 }
             });
         }, { threshold: 0.5 });
-        
+
         observer.observe(video);
     });
 }

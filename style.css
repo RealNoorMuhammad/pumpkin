@@ -1056,13 +1056,7 @@ body::before {
         min-width: calc((100% - 20px) / 2);
     }
 
-    .carousel-btn-left {
-        left: 15px;
-    }
 
-    .carousel-btn-right {
-        right: 15px;
-    }
 
     .video-creator {
         font-size: 0.75rem;
@@ -1331,4 +1325,187 @@ body::before {
     .footer-center {
         display: none;
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 3rem auto;
+  overflow: hidden;
+  padding: 0 2rem;
+}
+
+.carousel-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  transition: transform 0.5s ease;
+}
+
+.carousel-item {
+  flex: 0 0 calc(33.333% - 1rem);
+  display: flex;
+  justify-content: center;
+}
+
+  .carousel-btn-left {
+    left: 10px;
+  }
+
+  .carousel-btn-right {
+    right: 160px;
+  }
+/* ======= RESPONSIVE ======= */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .carousel-item {
+    flex: 0 0 calc(50% - 1rem);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .carousel-container {
+    padding: 0 1rem;
+  }
+
+  .carousel-track {
+    gap: 1rem;
+  }
+
+  .carousel-item {
+    flex: 0 0 100%;
+  }
+
+  .video-card {
+    max-width: 100%;
+  }
+
+
+
+  .carousel-btn-left {
+    left: -15px;
+    top: 290px;
+      position: relative;
+  
+
+  }
+
+  .carousel-btn-right {
+    right: 10px;
+    
+ 
+  }
 }
